@@ -296,10 +296,10 @@ select msj;
 end if;
 
 if(aux1+aux2=2)then
-insert into empleado values(newidemp,newcontra,nomemp,apellpaem,apellmaem,idadmi);
-insert into trabajar values(idfarm,newidemp);
-select * from empleado;
-select * from trabajar;
+insert into provedor values ("Aztrazenec@farm.com","Aztrazeneca","+525509123698","U.K.","edgargarcia@farma.com");
+insert into abastecer values(idfarm,newidemp);
+select * from provedor;
+select * from abastecer;
 end if;
 
 if(aux1+aux2=0)then
