@@ -114,6 +114,7 @@ CREATE TABLE Productos
   Contenido varchar(100) NOT NULL,
   NombreProducto varchar(100) NOT NULL,
   ImagenProduc varchar(100) NOT NULL, -- Investigar como agregar imagenes
+  Presio varchar(100) NOT NULL,
   IDFarmacia varchar(100) NOT NULL,
   PRIMARY KEY (IDProducto),
   FOREIGN KEY (IDFarmacia) REFERENCES Farmacia(IDFarmacia)
@@ -143,15 +144,35 @@ insert into farmacia values("Tecamac1234","+525512345678","Farmacia Tecamac","ed
 insert into cliente values("paty@gmail.com","Patricia","Marciano","Lazaro","juan@farma.com");
 -- Ubicacion
 insert into ubicacion values(14,"Lomas","Tecamac1234","55749");
--- Abastecer
+-- Abastecer admin compra productos del provedor, relacionar idfarmacia con idprovedor e insertar en los productos por id actualizando su registro
 
--- Trabajar
+-- Trabajar listo
 
 -- Almacenar
 
 -- Productos
-insert into productos values("Agua1234","15","2028-04-10","Alimento","Agua Natural 1LT","Agua Epura","https://www.superama.com.mx/Content/images/products/img_large/0750108680063L.jpg","Tecamac1234");
+insert into productos values("Agua1234","15","2028-04-10","Alimento","Agua Natural 1LT","Agua Epura","https://www.superama.com.mx/Content/images/products/img_large/0750108680063L.jpg","12","Tecamac1234");
 -- Comprar
+
+-- SP Inicio Secion
+drop procedure if exists spInicio;
+delimiter |
+create procedure spInicio(in id nvarchar(30), contra nvarchar(100))
+begin
+declare aux1  nvarchar(1);
+declare aux2 nvarchar(1);
+declare msj nvarchar(100);
+declare adm nvarchar(1);
+declare cli nvarchar(1);
+
+set adm =(select count(*) from Admin1 where id = IDAdm and contra=contrasenaAdmin);
+
+if(adm=1)then
+
+end; |
+delimiter ;
+
+
 
 -- Sp Registrar Admin
 drop procedure if exists spCreaAdmin;
@@ -263,7 +284,7 @@ select * from trabajar;
 end if;
 
 if(aux1+aux2=0)then
-set msj="Porfavor verifique, si no es Admin no puede Agregar Farmacias.";
+set msj="Porfavor verifique, si no es Admin no puede Agregar Empleados.";
 select msj;
 end if;
 end; |
@@ -275,7 +296,7 @@ delimiter ;
 
 drop procedure if exists spagregarpro;
 delimiter |
-create procedure spagregarpro(in idadmi nvarchar(30), contra nvarchar(100), in newidemp nvarchar(30),in newcontra nvarchar(100), in nomemp nvarchar(100), in apellpaem nvarchar(100),in apellmaem nvarchar(100), in idfarm nvarchar(30))
+create procedure spagregarpro(in idadmi nvarchar(30), contra nvarchar(100), in idprove nvarchar(30),in nombreprove nvarchar(100), in phone nvarchar(13), in pais nvarchar(100))
 begin
 
 declare aux1  nvarchar(1);
@@ -296,17 +317,18 @@ select msj;
 end if;
 
 if(aux1+aux2=2)then
-insert into provedor values ("Aztrazenec@farm.com","Aztrazeneca","+525509123698","U.K.","edgargarcia@farma.com");
-insert into abastecer values(idfarm,newidemp);
+insert into provedor values (idprove,nombreprove,phone,pais,idadmi);
 select * from provedor;
-select * from abastecer;
 end if;
 
 if(aux1+aux2=0)then
-set msj="Porfavor verifique, si no es Admin no puede Agregar Farmacias.";
+set msj="Porfavor verifique, si no es Admin no puede Agregar Provedores.";
 select msj;
 end if;
 end; |
 delimiter ;
+-- call spagregarpro("edgargarcia@farma.com",'Bon12', "Moderna@farm.com","Moderna","+525578234090", "U.S.A.")
+
+
 -- select * from farmacia,trabajar where IDEmpleado="jose@farma.com";
 -- select * from admin1;
