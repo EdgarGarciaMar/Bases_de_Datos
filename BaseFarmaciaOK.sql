@@ -354,7 +354,8 @@ begin
 declare aux1  nvarchar(1);
 declare aux2 nvarchar(1);
 declare msj nvarchar(100);
-declare prod nvarchar(30);
+declare prod,idf,idp nvarchar(30);
+
 
 set aux1=(select count(*) from Admin1 where idadmi = IDAdm); 
 set aux2=(select count(*) from Admin1 where contra=contrasenaAdmin);
@@ -370,6 +371,14 @@ select msj;
 end if;
 
 if(aux1+aux2=2)then
+set idf=(select count(*) from Farmacia where  idfarm=IDFarmacia);
+set idp=(select count(*) from Provedor where idprove=IDProveedor);
+
+if(idf =0 or idp =0)then
+set msj="Farmacia o Provedor no registrado";
+select msj;
+else
+
 insert into abastecer values(idfarm,idprove);
 set prod=(select count(*) from productos where producto=IDProducto);
 if(prod=1)then
@@ -388,10 +397,11 @@ if(aux1+aux2=0)then
 set msj="Porfavor verifique, si no es Admin no puede Agregar Abastecer farmacias.";
 select msj;
 end if;
+end if;
 end; |
 delimiter ;
 
-call spabastecer("edgargarcia@farma.com",'Bon12',"Aztrazenec@farm.com","Tecamac1234", "Agua1234",18, 28, "2029-06-01","e","e","e","e")-- abastecer producto existente
-
+-- call spabastecer("edgargarcia@farma.com",'Bon12',"Aztrazenec@farm.com","Tecamac1234", "Agua1234",18, 28, "e","e","e","e","e");-- abastecer producto existente
+-- call spabastecer("edgargarcia@farma.com",'Bon12',"Aztrazenec@farm.com","Tecamac1234", "ma1",18, 28, "2029-06-01","prueba","prueba","prueba","prueba");-- abastecer producto nuevo
 -- select * from farmacia,trabajar where IDEmpleado="jose@farma.com";
 -- select * from admin1;
