@@ -1,3 +1,5 @@
+
+SET sql_mode=(SELECT REPLACE(@@sql_mode,"ONLY_FULL_GROUP_BY",""));
 drop database if exists farm;
 create database farm;
 use farm;
@@ -108,13 +110,13 @@ CREATE TABLE Almacenar
 CREATE TABLE Productos
 (
   IDProducto varchar(30) NOT NULL,
-  Disponivilidad varchar(100) NOT NULL,
+  Disponivilidad int NOT NULL,
   Caducidad date NOT NULL,
   Tipo varchar(100) NOT NULL,
   Contenido varchar(100) NOT NULL,
   NombreProducto varchar(100) NOT NULL,
   ImagenProduc varchar(100) NOT NULL, -- Investigar como agregar imagenes
-  Presio varchar(100) NOT NULL,
+  Presio int NOT NULL,
   IDFarmacia varchar(100) NOT NULL,
   PRIMARY KEY (IDProducto),
   FOREIGN KEY (IDFarmacia) REFERENCES Farmacia(IDFarmacia)
@@ -151,7 +153,7 @@ insert into ubicacion values(14,"Lomas","Tecamac1234","55749");
 -- Almacenar
 
 -- Productos
-insert into productos values("Agua1234","15","2028-04-10","Alimento","Agua Natural 1LT","Agua Epura","https://www.superama.com.mx/Content/images/products/img_large/0750108680063L.jpg","12","Tecamac1234");
+insert into productos values("Agua1234",15,"2028-04-10","Alimento","Agua Natural 1LT","Agua Epura","https://www.superama.com.mx/Content/images/products/img_large/0750108680063L.jpg",12,"Tecamac1234");
 -- Comprar
 
 -- SP Inicio Secion
@@ -159,19 +161,33 @@ drop procedure if exists spInicio;
 delimiter |
 create procedure spInicio(in id nvarchar(30), contra nvarchar(100))
 begin
-declare aux1  nvarchar(1);
-declare aux2 nvarchar(1);
 declare msj nvarchar(100);
 declare adm nvarchar(1);
-declare cli nvarchar(1);
+declare emple nvarchar(1);
 
 set adm =(select count(*) from Admin1 where id = IDAdm and contra=contrasenaAdmin);
 
 if(adm=1)then
+select * from Admin1 where id = IDAdm and contra=contrasenaAdmin;
+set msj ="admin";
+select msj;
+else 
+set emple=(select count(*) from empleado where id = IDEmpleado and contra=ContrasenaEmp);
+if(emple=1)then
+select * from empleado where id = IDEmpleado and contra=ContrasenaEmp;
+set msj="empleado";
+select msj;
+else
+set msj="ID o contraseña incorecta";
+select msj;
+end if;
+end if;
 
 end; |
 delimiter ;
 
+-- call spInicio("juan@farma.com",'1234'); -- empleado
+-- call spInicio("edgargarcia@farma.com",'Bon12'); -- admin
 
 
 -- Sp Registrar Admin
@@ -329,6 +345,53 @@ end; |
 delimiter ;
 -- call spagregarpro("edgargarcia@farma.com",'Bon12', "Moderna@farm.com","Moderna","+525578234090", "U.S.A.")
 
+-- SP abastecer
+drop procedure if exists spabastecer;
+delimiter |
+create procedure spabastecer(in idadmi nvarchar(30), contra nvarchar(100), in idprove nvarchar(30),in idfarm nvarchar(30), in producto nvarchar(30),in precio int, in cant int, in fechac date,Tipo varchar(100),Contenido varchar(100),NombreProducto varchar(100),ImagenProduc varchar(100))
+begin
+
+declare aux1  nvarchar(1);
+declare aux2 nvarchar(1);
+declare msj nvarchar(100);
+declare prod nvarchar(30);
+
+set aux1=(select count(*) from Admin1 where idadmi = IDAdm); 
+set aux2=(select count(*) from Admin1 where contra=contrasenaAdmin);
+
+if(aux1 !=1 )then
+set msj="ID incorrecta";
+select msj;
+end if;
+
+if(aux2!=1)then
+set msj="Contraseña incorrecta";
+select msj;
+end if;
+
+if(aux1+aux2=2)then
+insert into abastecer values(idfarm,idprove);
+set prod=(select count(*) from productos where producto=IDProducto);
+if(prod=1)then
+update productos
+set Disponivilidad=Disponivilidad+cant where producto=IDProducto;
+update productos
+set Presio=precio where producto=IDProducto;
+select * from productos;
+else
+insert into productos values(producto,cant,fechac,Tipo,Contenido,NombreProducto,ImagenProduc,precio,idfarm);
+select * from productos;
+end if;
+end if;
+
+if(aux1+aux2=0)then
+set msj="Porfavor verifique, si no es Admin no puede Agregar Abastecer farmacias.";
+select msj;
+end if;
+end; |
+delimiter ;
+
+call spabastecer("edgargarcia@farma.com",'Bon12',"Aztrazenec@farm.com","Tecamac1234", "Agua1234",18, 28, "2029-06-01","e","e","e","e")-- abastecer producto existente
 
 -- select * from farmacia,trabajar where IDEmpleado="jose@farma.com";
 -- select * from admin1;
