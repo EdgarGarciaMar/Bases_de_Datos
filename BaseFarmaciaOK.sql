@@ -146,7 +146,7 @@ insert into farmacia values("Tecamac1234","+525512345678","Farmacia Tecamac","ed
 insert into cliente values("paty@gmail.com","Patricia","Marciano","Lazaro","juan@farma.com");
 -- Ubicacion
 insert into ubicacion values(14,"Lomas","Tecamac1234","55749");
--- Abastecer admin compra productos del provedor, relacionar idfarmacia con idprovedor e insertar en los productos por id actualizando su registro
+-- Abastecer listo
 
 -- Trabajar listo
 
@@ -403,5 +403,29 @@ delimiter ;
 
 -- call spabastecer("edgargarcia@farma.com",'Bon12',"Aztrazenec@farm.com","Tecamac1234", "Agua1234",18, 28, "e","e","e","e","e");-- abastecer producto existente
 -- call spabastecer("edgargarcia@farma.com",'Bon12',"Aztrazenec@farm.com","Tecamac1234", "ma1",18, 28, "2029-06-01","prueba","prueba","prueba","prueba");-- abastecer producto nuevo
+
+-- SP Registrar clientes
+
+drop procedure if exists spafiliar;
+delimiter |
+create procedure spafiliar(in idemple nvarchar(30), in idclie nvarchar(30), in nomcli nvarchar(100), in apellpacli nvarchar(100),in apellmacli nvarchar(100))
+begin
+declare aux nvarchar(1);
+declare msj nvarchar(100);
+
+set aux=(select count(*) from Empleado where idemple=IDEmpleado);
+
+if(aux=1)then
+insert into cliente values(idclie,nomcli,apellpacli,apellmacli,idemple);
+select * from Cliente;
+else
+set msj="Error de ID Empleado";
+select msj;
+end if;
+end; |
+delimiter ;
+
+-- call spafiliar("juan@farma.com", "fer@gmail.com","Fernanda","Garcia","Marciano");
+
 -- select * from farmacia,trabajar where IDEmpleado="jose@farma.com";
 -- select * from admin1;
