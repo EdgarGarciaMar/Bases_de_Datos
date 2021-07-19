@@ -150,11 +150,11 @@ insert into ubicacion values(14,"Lomas","Tecamac1234","55749");
 
 -- Trabajar listo
 insert into Trabajar values("Tecamac1234","juan@farma.com");
--- Almacenar
+-- Almacenar listo
 
 -- Productos
 insert into productos values("Agua1234",15,"2028-04-10","Alimento","Agua Natural 1LT","Agua Epura","https://www.superama.com.mx/Content/images/products/img_large/0750108680063L.jpg",12,"Tecamac1234");
--- Comprar
+-- Comprar listo
 
 -- SP Inicio Secion
 drop procedure if exists spInicio;
