@@ -149,7 +149,7 @@ insert into ubicacion values(14,"Lomas","Tecamac1234","55749");
 -- Abastecer listo
 
 -- Trabajar listo
-
+insert into Trabajar values("Tecamac1234","juan@farma.com");
 -- Almacenar
 
 -- Productos
@@ -426,6 +426,67 @@ end; |
 delimiter ;
 
 -- call spafiliar("juan@farma.com", "fer@gmail.com","Fernanda","Garcia","Marciano");
+
+-- SP Compras
+
+drop procedure if exists spcompras;
+delimiter |
+create procedure spcompras(in idemple nvarchar(30), in idclie nvarchar(30),in idprodu nvarchar(30),in cantidad int)
+begin
+declare aux,aux2 nvarchar(1);
+declare msj nvarchar(100);
+declare existe nvarchar(100);
+declare monto int;
+declare idf nvarchar(30);
+declare disp,prec int;
+
+set aux=(select count(*) from Empleado where idemple=IDEmpleado);
+set aux2=(select count(*) from Cliente where idclie=IDCliente);
+set existe=(select count(*) from Productos where idprodu=IDProducto);
+set disp=(select Disponivilidad from Productos);
+set prec=(select Presio from Productos);
+
+if(aux=1)then
+if(aux2=1)then
+if(existe=1)then
+if(disp>0 && disp >= cantidad)then
+-- Actualiza el inventario
+update Productos
+set Disponivilidad=Disponivilidad-cantidad where idprodu=IDProducto;
+select * from Productos;
+-- Calcula el monto a pagar
+set monto=cantidad*prec;
+select monto;
+-- Guardar el resistro en comprar
+insert into Comprar values(idclie,idprodu);
+select * from Comprar;
+-- Guardar el registro de la compra en almacen de compras del cliente
+set idf=(select IDFarmacia from Trabajar where idemple=IDEmpleado);
+insert into Almacenar values(idprodu,cantidad,idclie,idf);
+select * from Almacenar;
+else
+set msj="Sin disponivilidad o producto insuficiente.";
+select msj;
+end if;
+else
+set msj="Producto no registrado";
+select msj;
+end if;
+else
+set msj="Cliente No registrado";
+select msj;
+end if;
+else
+set msj="Error ID Empleado";
+select msj;
+end if;
+
+end; |
+delimiter ;
+
+-- call spcompras("juan@farma.com","paty@gmail.com","Agua1234",15);
+
+-- view de productos
 
 -- select * from farmacia,trabajar where IDEmpleado="jose@farma.com";
 -- select * from admin1;
