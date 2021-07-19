@@ -487,6 +487,22 @@ delimiter ;
 -- call spcompras("juan@farma.com","paty@gmail.com","Agua1234",15);
 
 -- view de productos
+drop view if exists Mostraproductos;
+create view Mostraproductos as select IDProducto,NombreProducto,Contenido,Tipo,Caducidad,Disponivilidad,ImagenProduc,Presio from Productos order by 1;
 
--- select * from farmacia,trabajar where IDEmpleado="jose@farma.com";
--- select * from admin1;
+-- select * from Mostraproductos;
+
+-- view de farmacias
+drop view if exists Mostrarfarmacias;
+create view Mostrarfarmacias as select f.IDFarmacia as "ID",f.NombreFarm as "Nombre",f.TelefonoFarm as "Telefono",u.Numero as "Numero",u.Calle as "Calle",p.Colonia as "Colonia",p.Ciudad as "Ciudad",p.Estado as "Estado",p.Codigo_Postal as "Codigo Postal" from Farmacia f,Ubicacion u, Postal p order by 1;
+-- select * from Mostrarfarmacias;
+
+-- view de provedores
+drop view if exists Mostrarprovedores;
+create view Mostrarprovedores as select IDProveedor,NombreProveedor,TelefonoProveedor,PaisProve from Provedor order by 1;
+-- select * from Mostrarprovedores;
+
+-- view de empleados
+drop view if exists Mostrarempleados;
+create view Mostrarempleados as select e.IDEmpleado as "ID", e.NombreEmpleado as "Nombres",e.ApellidoPaEmp as "Apellido Paterno", e.ApellidoMaEmp as "Apellido Materno", t.IDFarmacia as "ID de Farmacia laboral", f.NombreFarm as "Sucursal",f.TelefonoFarm as "Telefono",u.Numero as "Numero",u.Calle as "Calle",p.Colonia as "Colonia",p.Ciudad as "Ciudad",p.Estado as "Estado",p.Codigo_Postal as "Codigo Postal" from Empleado e, Trabajar t, Farmacia f,Ubicacion u, Postal p where e.IDEmpleado=t.IDEmpleado order by 1;
+-- select * from Mostrarempleados;
