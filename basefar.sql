@@ -168,15 +168,15 @@ declare emple nvarchar(1);
 set adm =(select count(*) from Admin1 where id = IDAdm and contra=contrasenaAdmin);
 
 if(adm=1)then
-select * from Admin1 where id = IDAdm and contra=contrasenaAdmin;
 set msj ="admin";
  select msj;
+ select * from Admin1 where id = IDAdm and contra=contrasenaAdmin;
 else 
 set emple=(select count(*) from empleado where id = IDEmpleado and contra=ContrasenaEmp);
 if(emple=1)then
-select * from empleado where id = IDEmpleado and contra=ContrasenaEmp;
 set msj="empleado";
  select msj;
+ select * from empleado where id = IDEmpleado and contra=ContrasenaEmp;
 else
 set msj="ID o contraseña incorecta";
 select msj;
