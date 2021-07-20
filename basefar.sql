@@ -235,7 +235,7 @@ delimiter ;
 -- Sp Registrar farmacia
 drop procedure if exists spCreafarm;
 delimiter |
-create procedure spCreafarm(in idadmi nvarchar(30), contra nvarchar(100), in idfarm nvarchar(30),in phone nvarchar(13), in nomfarm nvarchar(100), in cp nvarchar(5),in edo nvarchar(100),in ciudad nvarchar(100),in colonia nvarchar(100), in num int)
+create procedure spCreafarm(in idadmi nvarchar(30), contra nvarchar(100), in idfarm nvarchar(30),in phone nvarchar(13), in nomfarm nvarchar(100), in cp nvarchar(5),in edo nvarchar(100),in ciudad nvarchar(100),in colonia nvarchar(100), in num int,in calli nvarchar(100))
 begin
 
 declare aux1  nvarchar(1);
@@ -256,9 +256,11 @@ select msj;
 end if;
 
 if(aux1+aux2=2)then
+set msj="ok";
+select msj;
 insert into farmacia values(idfarm,phone,nomfarm,idadmi);
 insert into postal values(cp,edo,ciudad,colonia);
-insert into ubicacion values(num,colonia,idfarm,cp);
+insert into ubicacion values(num,calli,idfarm,cp);
 select * from farmacia;
 select * from postal;
 select * from ubicacion;
@@ -271,7 +273,7 @@ end if;
 end; |
 delimiter ;
 
--- call spCreafarm("edgargarcia@farma.com", 'Bon12', "CDMX1234","+525555555555", "Farmacia CDMX","06920","CDMX","GAM","5 mayo",11);
+-- call spCreafarm("edgargarcia@farma.com", 'Bon12', "CDMX1234","+525555555555", "Farmacia CDMX","06920","CDMX","GAM","5 mayo",11,"Insurgentes");
 
 -- SP contratar empleados
 drop procedure if exists spcontratar;
