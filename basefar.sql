@@ -512,3 +512,7 @@ create view Mostrarprovedores as select IDProveedor,NombreProveedor,TelefonoProv
 drop view if exists Mostrarempleados;
 create view Mostrarempleados as select e.IDEmpleado as "ID", e.NombreEmpleado as "Nombres",e.ApellidoPaEmp as "Apellido Paterno", e.ApellidoMaEmp as "Apellido Materno", t.IDFarmacia as "ID de Farmacia laboral", f.NombreFarm as "Sucursal",f.TelefonoFarm as "Telefono",u.Numero as "Numero",u.Calle as "Calle",p.Colonia as "Colonia",p.Ciudad as "Ciudad",p.Estado as "Estado",p.Codigo_Postal as "Codigo Postal" from Empleado e, Trabajar t, Farmacia f,Ubicacion u, Postal p where e.IDEmpleado=t.IDEmpleado order by 1;
 -- select * from Mostrarempleados;
+select * from Admin1;
+select * from Farmacia;
+select * from postal;
+select * from ubicacion;
