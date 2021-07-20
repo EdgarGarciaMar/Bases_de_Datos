@@ -202,6 +202,7 @@ declare msj nvarchar(100);
 set aux1=(select count(*) from Admin1 where idadmi = IDAdm); 
 set aux2=(select count(*) from Admin1 where contra=contrasenaAdmin);
 
+
 if(aux1!= 1)then
 set msj="ID incorrecta";
 select msj;
@@ -213,6 +214,8 @@ select msj;
 end if;
 
 if(aux1+aux2=2)then
+set msj="ok";
+select msj;
 insert into Admin1 values(idnewAd,newcontra,NewApellPAAd,NewApellMAAd,NewNomAd);
 select * from Admin1;
 end if;
@@ -222,10 +225,11 @@ set msj="Porfavor verifique, si no es Admin no puede agregar a mas Admins.";
 select msj;
 end if;
 
+
 end; |
 delimiter ;
 
--- call spCreaAdmin("edgargarcia@farma.com", 'Bon12', "Mario@farma.com","hola","Perez","Ju","Mario");
+ -- call spCreaAdmin("edgargarcia@farma.com", 'Bon12', "Mario@farma.com","hola","Perez","Ju","Mario");
 
 
 -- Sp Registrar farmacia
