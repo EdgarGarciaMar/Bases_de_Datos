@@ -138,6 +138,7 @@ insert into postal values("55749","Edo. Mex.","Tecamac","Lomas");
 insert into admin1 values("edgargarcia@farma.com",'Bon12',"Garcia","Marciano","Edgar");
 -- Empleados
 insert into empleado values("juan@farma.com",'1234',"Juan","Ruiz","Jimenez","edgargarcia@farma.com");
+insert into empleado values("pe@farma.com",'12345',"pedro","Ruiz","Jimenez","edgargarcia@farma.com");
 -- Provedor
 insert into provedor values ("Aztrazenec@farm.com","Aztrazeneca","+525509123698","U.K.","edgargarcia@farma.com");
 -- Farmacia
@@ -150,6 +151,7 @@ insert into ubicacion values(14,"Lomas","Tecamac1234","55749");
 
 -- Trabajar listo
 insert into Trabajar values("Tecamac1234","juan@farma.com");
+insert into Trabajar values("Tecamac1234","pe@farma.com");
 -- Almacenar listo
 
 -- Productos
@@ -299,6 +301,8 @@ select msj;
 end if;
 
 if(aux1+aux2=2)then
+set msj="ok";
+select msj;
 insert into empleado values(newidemp,newcontra,nomemp,apellpaem,apellmaem,idadmi);
 insert into trabajar values(idfarm,newidemp);
 select * from empleado;
@@ -339,6 +343,8 @@ select msj;
 end if;
 
 if(aux1+aux2=2)then
+set msj="ok";
+select msj;
 insert into provedor values (idprove,nombreprove,phone,pais,idadmi);
 select * from provedor;
 end if;
@@ -506,12 +512,12 @@ create view Mostrarfarmacias as select f.IDFarmacia as "ID",f.NombreFarm as "Nom
 -- view de provedores
 drop view if exists Mostrarprovedores;
 create view Mostrarprovedores as select IDProveedor,NombreProveedor,TelefonoProveedor,PaisProve from Provedor order by 1;
--- select * from Mostrarprovedores;
+ -- select * from Mostrarprovedores;
 
 -- view de empleados
 drop view if exists Mostrarempleados;
 create view Mostrarempleados as select e.IDEmpleado as "ID", e.NombreEmpleado as "Nombres",e.ApellidoPaEmp as "Apellido Paterno", e.ApellidoMaEmp as "Apellido Materno", t.IDFarmacia as "ID de Farmacia laboral", f.NombreFarm as "Sucursal",f.TelefonoFarm as "Telefono",u.Numero as "Numero",u.Calle as "Calle",p.Colonia as "Colonia",p.Ciudad as "Ciudad",p.Estado as "Estado",p.Codigo_Postal as "Codigo Postal" from Empleado e, Trabajar t, Farmacia f,Ubicacion u, Postal p where e.IDEmpleado=t.IDEmpleado order by 1;
--- select * from Mostrarempleados;
+ select * from Mostrarempleados;
 select * from Admin1;
 select * from Farmacia;
 select * from postal;
